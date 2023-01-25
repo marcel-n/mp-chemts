@@ -6,19 +6,19 @@ import nltk
 import h5py
 import os
 from datetime import datetime
-from keras.models import Sequential
-from keras.layers import Dense, Activation, TimeDistributed
-from keras.layers import LSTM, GRU
-from keras.layers.embeddings import Embedding
-from keras.optimizers import RMSprop, Adam
-from keras.utils.data_utils import get_file
-from keras.layers import Dropout
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Activation, TimeDistributed
+from tensorflow.keras.layers import LSTM, GRU
+from tensorflow.keras.layers import Embedding
+from tensorflow.keras.optimizers import RMSprop, Adam
+from tensorflow.keras.utils import get_file
+from tensorflow.keras.layers import Dropout
 import numpy as np
 import random
 import sys
-from keras.utils.np_utils import to_categorical
-from keras.preprocessing import sequence
-from keras.models import model_from_json
+from tensorflow.keras.utils import to_categorical
+from tensorflow.keras.preprocessing import sequence
+from tensorflow.keras.models import model_from_json
 # from tensorflow.keras.models import model_from_json
 #from make_smile import zinc_data_with_bracket_original, zinc_processed_with_bracket
 

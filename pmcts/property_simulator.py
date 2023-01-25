@@ -1,7 +1,11 @@
-from keras.preprocessing import sequence
-from Gaussian_DFT.RDKitText import tansfersdf
-from Gaussian_DFT.SDF2GauInput import GauTDDFT_ForDFT
-from Gaussian_DFT.GaussianRunPack import GaussianDFTRun
+from tensorflow.keras.preprocessing import sequence
+try:
+   from Gaussian_DFT.RDKitText import tansfersdf
+   from Gaussian_DFT.SDF2GauInput import GauTDDFT_ForDFT
+   from Gaussian_DFT.GaussianRunPack import GaussianDFTRun
+   GAUSS_AVAILABLE = True
+except ModuleNotFoundError:
+   GAUSS_AVAILABLE = False
 from pmcts import sascorer
 from rdkit import Chem
 from rdkit.Chem import Descriptors
@@ -72,31 +76,34 @@ class simulator:
             score = -1000 / (1 + 1000)
         return score, new_compound[0]
 
-    def wavelength_evaluator(self, new_compound, rank):
-        ind=rank
-        try:
-            m = Chem.MolFromSmiles(str(new_compound[0]))
-        except:
-            m= None
-        if m!= None:
-            stable = tansfersdf(str(new_compound[0]),ind)
-            if stable == 1.0:
-                try:
-                    SDFinput = 'CheckMolopt'+str(ind)+'.sdf'
-                    calc_sdf = GaussianDFTRun('B3LYP', '3-21G*', 1, 'uv homolumo', SDFinput, 0)
-                    outdic = calc_sdf.run_gaussian()
-                    wavelength = outdic['uv'][0]
-                except:
-                    wavelength = None
-            else:
-                wavelength = None
-            if wavelength != None and wavelength != []:
-                wavenum = wavelength[0]
-                gap = outdic['gap'][0]
-                lumo = outdic['gap'][1]
-                score = 0.01*wavenum/(1+0.01*abs(wavenum))
-            else:
-                score = -1
-        else:
-            score = -1
-        return score, new_compound[0]
+#    def wavelength_evaluator(self, new_compound, rank):
+#        if GAUSS_AVAILABLE:
+#	    ind=rank
+#	    try:
+#	        m = Chem.MolFromSmiles(str(new_compound[0]))
+#	    except:
+#	        m= None
+#	    if m!= None:
+#	        stable = tansfersdf(str(new_compound[0]),ind)
+#	        if stable == 1.0:
+#	    	try:
+#	    	    SDFinput = 'CheckMolopt'+str(ind)+'.sdf'
+#	    	    calc_sdf = GaussianDFTRun('B3LYP', '3-21G*', 1, 'uv homolumo', SDFinput, 0)
+#	    	    outdic = calc_sdf.run_gaussian()
+#	    	    wavelength = outdic['uv'][0]
+#	    	except:
+#	    	    wavelength = None
+#	        else:
+#	    	wavelength = None
+#	        if wavelength != None and wavelength != []:
+#	    	wavenum = wavelength[0]
+#	    	gap = outdic['gap'][0]
+#	    	lumo = outdic['gap'][1]
+#	    	score = 0.01*wavenum/(1+0.01*abs(wavenum))
+#	        else:
+#	    	score = -1
+#	    else:
+#	        score = -1
+#	    return score, new_compound[0]
+#       else:
+#           pass    

@@ -1,0 +1,6 @@
+mpi4py
+rdkit
+tensorflow
+networkx[default]
+nltk
+ipdb
